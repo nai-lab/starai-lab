@@ -135,6 +135,8 @@ def view_lesson():
 
     else:
 
+        print(st.session_state['list_csv'])
+
         title = st.selectbox("プレビューするCSVファイルを選択してください", st.session_state['list_csv'].keys())
         list_csv = st.session_state['list_csv'][title]
 
@@ -180,6 +182,9 @@ def view_lesson():
 
                 for idx, line in enumerate(file):
 
+
+                    print(line)
+
                     dict_temp = {}
                     dict_temp['id']    = str(line[0])
                     dict_temp['style'] = str(line[1])
@@ -188,9 +193,36 @@ def view_lesson():
                     dict_temp['text']  = str(line[4])
                     dict_temp['res1']  = str(line[5])
                     dict_temp['res2']  = str(line[6])
+                    dict_temp['res3']  = str(line[7])
+                    dict_temp['next1']  = str(line[8])
+                    dict_temp['next2']  = str(line[9])
+                    dict_temp['next3']  = str(line[10])
 
                     if dict_temp['res2'] == 'nan':
                         dict_temp['res2'] = ''
+                        del dict_temp['res2']
+
+                    if dict_temp['res3'] == 'nan':
+                        dict_temp['res3'] = ''
+                        del dict_temp['res3']
+
+                    if dict_temp['next1'] == 'nan':
+                        dict_temp['next1'] = ''
+                        del dict_temp['next1']
+                    else:
+                        dict_temp['next1'] = str(int(float(dict_temp['next1'])))
+
+                    if dict_temp['next2'] == 'nan':
+                        dict_temp['next2'] = ''
+                        del dict_temp['next2']
+                    else:
+                        dict_temp['next2'] = str(int(float(dict_temp['next2'])))
+
+                    if dict_temp['next3'] == 'nan':
+                        dict_temp['next3'] = ''
+                        del dict_temp['next3']
+                    else:
+                        dict_temp['next3'] = str(int(float(dict_temp['next3'])))
 
                     dict_json['datas'].append(dict_temp)
 
