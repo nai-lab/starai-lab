@@ -11,7 +11,7 @@ import chat_debugger
 def main():
 
     # タブに表示されるページ名の変更
-    st.set_page_config(page_title="STAR AI Lab")
+    st.set_page_config(page_title="Lab(0319-1046)")
     # Streamlit入門 – テーマの変更, ページの設定 | 楽しみながら理解するAI・機械学習入門
     # https://data-analytics.fun/2022/07/10/streamlit-theme-page-settings/
 

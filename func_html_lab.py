@@ -124,9 +124,9 @@ def make_html_balloon(file_name, message, back_color='aliceblue'):
                 <!-- キャラクターと吹き出し -->
                 <div class="flex items-center">
                 <div>
-                <img src="https://nai-lab.com/datasets/chatbot/cheery/assets/"""
+                <img src="https://starjuku-contents.s3.ap-northeast-1.amazonaws.com/cb/character/"""
 
-        str4 = """" alt="" style="width: 120px; height:auto;">
+        str4 = """.png" alt="" style="width: 120px; height:auto;">
                 </div>
                 <div class="balloon-left">
                 <p>"""
