@@ -89,34 +89,29 @@ def view_lesson():
                 try:
                     for idx, line in enumerate(list_csv):
 
-                        # id列のチェック
-                        if isinstance(line[0], float) and math.isnan(line[0]):
-                            st.warning(f'{uploaded_file.name}{idx+1} 行目の id 列が入力されていません ※必須入力')
-                            error_flg = True
-
                         # style列のチェック
                         styles = ['left', 'right']
-                        if line[1] not in styles:
+                        if line[0] not in styles:
                             st.warning(f'{uploaded_file.name}{idx+1} 行目の style 列に不正な値が設定されています（left,rightのみ許可）')
                             error_flg = True
 
                         # character列のチェック
-                        if not isinstance(line[2], str):
+                        if not isinstance(line[1], str):
                             st.warning(f'{uploaded_file.name}{idx+1} 行目の character 列が入力されていません ※必須入力')
                             error_flg = True
 
                         # name列のチェック
-                        if not isinstance(line[5], str):
+                        if not isinstance(line[4], str):
                             st.warning(f'{uploaded_file.name}{idx+1} 行目の name 列が入力されていません ※必須入力')
                             error_flg = True
 
                         # text列のチェック
-                        if not isinstance(line[6], str):
+                        if not isinstance(line[5], str):
                             st.warning(f'{uploaded_file.name}{idx+1} 行目の text 列が入力されていません ※必須入力')
                             error_flg = True
 
                         # content列のチェック
-                        if line[3] != line[3] or line[3] in ["image", "video"]:
+                        if line[2] != line[2] or line[2] in ["image", "video"]:
                             # 正常な処理
                             pass
                         else:
@@ -125,8 +120,8 @@ def view_lesson():
                             error_flg = True
 
                         # text列のチェック
-                        if isinstance(line[6], str):                        
-                            for text in line[6]:
+                        if isinstance(line[5], str):                        
+                            for text in line[5]:
                                 # print(f'{text} = {ord(text)}')
                                 if ord(text) == 10:
                                     st.warning(f'{uploaded_file.name}{idx+1} 行目の text 列に改行が含まれています')
@@ -161,11 +156,11 @@ def view_lesson():
         page = st.slider('表示するページを指定してください（スライダーにフォーカスを当てた後は、カーソルキーで移動できます）', min_value=1, max_value=len(list_csv))
         idx = page -1
 
-        text_html = func_html_lab.make_html_balloon(str(list_csv[idx][2]), func_html_lab.trans_html_tag(str(list_csv[idx][6])))
+        text_html = func_html_lab.make_html_balloon(str(list_csv[idx][1]), func_html_lab.trans_html_tag(str(list_csv[idx][5])))
         stc.html(text_html, height=200)
-        st.write(f'【話者】 {list_csv[idx][5]}')
+        st.write(f'【話者】 {list_csv[idx][4]}')
 
-        st.radio('【選択肢】', [list_csv[idx][7], list_csv[idx][8], list_csv[idx][9]])
+        st.radio('【選択肢】', [list_csv[idx][6], list_csv[idx][7], list_csv[idx][8]])
 
         st.write('')
         st.write('【csvファイル詳細】')
@@ -198,12 +193,15 @@ def view_lesson():
                 dict_json['scene'] = file_name.split(".")[0]
                 dict_json['datas'] = []
 
+                num_id = 0
+
                 for idx, line in enumerate(file):
+                    num_id += 1
 
-                    dict_temp = {}
+                    dict_temp = {'id': num_id}
 
-                    keys = ['id', 'style', 'character', 'content', 'content_path', 'name', 'text', 'res1', 'res2', 'res3', 'next1', 'next2', 'next3']
-                    dict_temp = {keys[i]: str(line[i]) for i in range(len(keys))}
+                    keys = ['style', 'character', 'content', 'content_path', 'name', 'text', 'res1', 'res2', 'res3', 'next1', 'next2', 'next3']
+                    dict_temp.update({keys[i]: str(line[i]) for i in range(len(keys))})
 
                     keys_to_check = ['content', 'content_path', 'name', 'text']
 
@@ -225,7 +223,7 @@ def view_lesson():
                         if dict_temp.get(key) == 'nan':
                             del dict_temp[key]
                         else:
-                            dict_temp[key] = str(int(float(dict_temp[key])))
+                            dict_temp[key] = str(int(float(dict_temp[key])) + num_id)
 
                     dict_json['datas'].append(dict_temp)
 
